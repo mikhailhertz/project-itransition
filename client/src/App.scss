@@ -1,0 +1,126 @@
+@import 'bootstrap/scss/functions';
+
+$primary: #6610f2;
+
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/forms';
+
+$half-spacer: $spacer * .5;
+
+@media (max-width: 767px) {
+    .top-margin-on-break {
+        margin-top: $half-spacer;
+    }
+    .bottom-margin-on-break {
+        margin-bottom: $half-spacer;
+    }
+}
+
+.max-width-8 {
+    max-width: 8rem;
+}
+
+.max-width-20 {
+    max-width: 20rem;
+}
+
+.max-width-60 {
+    max-width: 60rem;
+}
+
+.item-image {
+    max-width: 10rem;
+}
+
+.rbt-token-removeable {
+    background-color: rgba($primary, 0.9);
+    color: $light;
+}
+
+.rbt-input.focus {
+    box-shadow: $input-btn-focus-box-shadow;
+}
+
+.rbt-menu {
+    margin-bottom: 0 !important;
+}
+
+.dark .rbt-menu {
+    background-color: $dark;
+    color: $light;
+}
+
+.dark .rbt-input-hint {
+    color: $secondary !important;
+}
+
+.dark .dropdown-item {
+    color: $light;
+}
+
+.dark .dropdown-item:hover {
+    background-color: $secondary;
+    color: $light;
+}
+
+.rbt-close {
+    background: transparent;
+    border: none;
+}
+
+.dark .rbt-input-main {
+    color: $light;
+}
+
+.navbar {
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.dark {
+    background-color: $dark;
+    color: $light;
+}
+
+.dark .form-control {
+    background-color: $dark;
+    color: $light;
+    border-color: $secondary;
+}
+
+.dark .form-control:focus {
+    background-color: $dark;
+    color: $light;
+    border-color: $secondary;
+}
+
+.dark :-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0 50px $blue-900;
+    -webkit-text-fill-color: $light;
+    caret-color: white;
+}
+
+.dark :-webkit-autofill:focus {
+    -webkit-box-shadow: inset 0 0 0 50px $blue-900, $input-btn-focus-box-shadow;
+    -webkit-text-fill-color: $light;
+    caret-color: white;
+}
+
+.dark .form-select {
+    background-color: $dark;
+    color: $light;
+    border-color: $secondary;
+}
+
+.dark .list-group-item {
+    background-color: $dark;
+    color: $light;
+    border-color: $secondary;
+}
+
+.dark .card {
+    background-color: $dark;
+    color: $light;
+    border-color: $secondary;
+}

@@ -1,0 +1,5 @@
+*CLIENT*
+aria accessibility
+unit tests
+*SERVER*
+use a logging library instead of console.log
