@@ -49,9 +49,7 @@ app.use(express.json())
 app.use(verifyToken)
 app.use(express.static('uploads'))
 const server = http.createServer(app)
-const io = socket(server, {
-    transports: ['websocket']
-})
+const io = socket(server)
 app.locals.io = io
 
 const storage = multer.diskStorage({
