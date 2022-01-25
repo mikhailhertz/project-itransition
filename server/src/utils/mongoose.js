@@ -9,7 +9,7 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 mongoose.connection.once('open', () => {
     console.log('MongoDB up')
-    })
+})
     .on('error', error => {
         throw new Error('Database error')
     })
