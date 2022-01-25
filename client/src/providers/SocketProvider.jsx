@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 import { io } from 'socket.io-client'
 
-var socket = io('http://localhost:3001', {
+var socket = io(window.location.origin, {
     transports: ['websocket', 'polling']
 })
 
