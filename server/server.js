@@ -1,4 +1,3 @@
-console.log('server.js')
 const express = require('express')
 const http = require('http')
 const socket = require('socket.io')
@@ -49,7 +48,9 @@ app.use(express.json())
 app.use(verifyToken)
 app.use(express.static('uploads'))
 const server = http.createServer(app)
-const io = socket(server)
+const io = socket(server)//, {
+//    transports: ['websocket']
+//})
 app.locals.io = io
 
 const storage = multer.diskStorage({
@@ -71,16 +72,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 io.on('connection', (socket) => {
-    socket.on('joined comment section', (collectionId) => {
+    socket.on('collection', (collectionId) => {
         socket.join(collectionId)
     })
-    socket.on('left comment section', (collectionId) => {
+    socket.on('left collection', (collectionId) => {
         socket.leave(collectionId)
     })
 })
 
 app.post('/api/block-user', adminGuard, blockUser)
-app.post('/api/post-collection', adminGuard, upload.any('picture'), postCollection)
+app.post('/api/post-collection', tokenGuard, upload.any('picture'), postCollection)
 app.post('/api/post-comment', tokenGuard, postComment, eventNewComment)
 app.post('/api/post-tag', tokenGuard, postTag)
 app.post('/api/sign-up', signUp)

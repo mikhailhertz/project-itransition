@@ -28,7 +28,7 @@ async function postCollection(request, response) {
     const collection = new Collection({
         _id: collectionId,
         title: request.body.title,
-        tags: request.body.tags.split(','),
+        tags: request.body.tags.length > 0 ? request.body.tags.split(',') : [],
         category: request.body.category,
         description: request.body.description,
         user: response.locals.token.uid,

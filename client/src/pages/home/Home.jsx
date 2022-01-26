@@ -1,39 +1,55 @@
 import getAllCollections from 'api/get/getAllCollections'
 import getPopularTags from 'api/get/getPopularTags'
 import CollectionList from 'components/view/CollectionList'
+import { pathByTag } from 'paths'
 import { useEffect, useState } from 'react'
-import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import getCollectionsByTag from 'api/get/getCollectionsByTag'
 import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
-    const { t } = useTranslation()
+    const [state, setState] = useState({
+        tags: [],
+        collections: []
+    })
     const navigate = useNavigate()
-    const [collections, setCollections] = useState([])
-    const [popularTags, setPopularTags] = useState([])
-    useEffect(() => {
-        getAllCollections().then(result => setCollections(result))
-        getPopularTags().then(result => setPopularTags(result))
-    }, [])
-    const handleClick = async tag => {
-        const collections = await getCollectionsByTag(tag)
-        navigate('/search', { state: collections })
+    const { t } = useTranslation()
+    const handleFindByTag = async event => {
+        navigate(pathByTag, { state: event.target.value })
     }
+    useEffect(() => {
+        getPopularTags().then(async tags => {
+            setState({
+                tags: tags,
+                collections: await getAllCollections()
+            })
+        })
+    }, [])
     return (
         <Container fluid>
             <Helmet>
                 <title>{t('pageHome')}</title>
             </Helmet>
-            <div className='d-flex mb-3 align-items-center'>
-                <div className='h5 me-2'>{t('uiPopularTags')}</div>
-                {
-                    popularTags?.map(tag => <Button onClick={event => handleClick(tag.tag)} className='me-2'>{tag.tag}</Button>)
-                }
-            </div>
-            <CollectionList collections={collections} />
+            <Row className='mb-3 gx-0 align-items-center'>
+                <Col className='pe-3' sm='auto'>
+                    <h4 className='mt-2 mb-0'>
+                        {t('uiPopularTags')}
+                    </h4>
+                </Col>
+                <Col>
+                    {
+                        state.tags.map(tag =>
+                            <Button className='me-2 mt-2' key={tag.tag} value={tag.tag} onClick={handleFindByTag}>
+                                {tag.tag}
+                            </Button>)
+                    }
+                </Col>
+            </Row>
+            <CollectionList collections={state.collections} />
         </Container>
     )
 }

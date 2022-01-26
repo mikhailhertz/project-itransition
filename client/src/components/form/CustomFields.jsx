@@ -5,8 +5,6 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { useTranslation } from 'react-i18next'
 
-// TODO: separate this into components
-
 export default function CustomFields({ items }) {
     const { t } = useTranslation()
     const [counter, setCounter] = useState(0)
@@ -34,18 +32,12 @@ export default function CustomFields({ items }) {
     items.forEach((properties, id, map) => {
         elements.push(
             <Fragment key={'fragment' + id}>
-                <div className='h4 mt-3 d-flex' key={'header' + id}>
-                    <Button className='bg-transparent border-0 me-1' variant='danger' onClick={event => removeItem(id)}>
+                <div className='d-flex' key={'header' + id}>
+                    <Button className='bg-transparent border-0 me-1' size='lg' variant='danger' onClick={event => removeItem(id)}>
                         <FontAwesomeIcon icon={faMinus} color='red' />
                     </Button>
                     <Form.Control required key={'title' + id} size='lg' type='text' placeholder={t('uiItem', { i: i++ })} name={'title' + id} />
                 </div>
-                {
-                    items.get(id).size < 1 &&
-                    <div className='text-muted'>
-                        {t('uiAddFieldPrompt')}
-                    </div>
-                }
             </Fragment>
         )
         items.get(id).forEach((type, title) => {
@@ -64,21 +56,27 @@ export default function CustomFields({ items }) {
                 element = <Form.Control required key={title + id} type={items.get(id).get(title)} placeholder={title} name={title + id} />
             }
             elements.push(
-                <div className='d-flex my-3' key={'flex' + title + id}>
+                <div className='d-flex my-3 align-items-center' key={'flex' + title + id}>
                     <Button className='bg-transparent border-0 me-1' variant='danger' key={'removeFieldButton' + id} onClick={event => deleteProperty(id, title)}>
                         <FontAwesomeIcon icon={faMinus} color='red' />
                     </Button>
+                    <Form.Label className='mb-0 me-3'>
+                        {title + ':'}
+                    </Form.Label>
                     {element}
                 </div>
             )
         })
         elements.push(
-            <div className='d-flex my-3' key={'flex' + id}>
+            <div className='d-flex my-3 align-items-center' key={'flex' + id}>
                 <Button className='bg-transparent border-0 me-1' variant='success' key={'addFieldButton' + id} onClick={event => addProperty(id)}>
                     <FontAwesomeIcon icon={faPlus} color='green' />
                 </Button>
+                <Form.Label className='mb-0 me-3 text-nowrap'>
+                    {t('uiAddFieldPrompt')}
+                </Form.Label>
                 <Form.Control className='me-3' type='text' id={'newFieldTitle' + id} placeholder={t('uiNewFieldTitle')} key={'newFieldTitle' + id} />
-                <Form.Select className='max-width-8' id={'newFieldType' + id} key={'newFieldType' + id}>
+                <Form.Select id={'newFieldType' + id} key={'newFieldType' + id}>
                     <option value='text'>{t('uiText')}</option>
                     <option value='number'>{t('uiNumber')}</option>
                     <option value='image'>{t('uiImage')}</option>

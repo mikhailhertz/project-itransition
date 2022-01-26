@@ -7,6 +7,6 @@ export default async function signUp(name, email, password) {
         body: JSON.stringify({ name: name, email: email, password: password })
     })
     if (!response.ok) {
-        throw await response.json()
+        throw new Error(await response.text())
     }
 }

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 export default function ProfileButton() {
-    const { t } = useTranslation()
     const { token } = useContext(AuthenticationContext)
+    const { t } = useTranslation()
     var to, buttonText
     if (token) {
         to = pathProfile

@@ -14,12 +14,12 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 export default function NewCollection() {
-    const { t } = useTranslation()
-    const navigate = useNavigate()
     const [items, setItems] = useState(new Map())
     const [categories, setCategories] = useState([])
     const [fetchedTags, setFetchedTags] = useState([])
     const [tags, setTags] = useState([])
+    const navigate = useNavigate()
+    const { t } = useTranslation()
     const handleChange = event => {
         setTags(event)
     }
@@ -64,11 +64,11 @@ export default function NewCollection() {
         navigate(pathProfile)
     }
     return (
-        <Container className='max-width-60 justify-content-center'>
+        <Container fluid>
             <Helmet>
                 <title>{t('pageNewCollection')}</title>
             </Helmet>
-            <Form onSubmit={handleSubmit} id='newcollectionform'>
+            <Form onSubmit={handleSubmit} className='new-collection-form me-auto ms-auto' id='newcollectionform'>
                 <Form.Group className='mb-3'>
                     <Form.Control required type='text' name='title' placeholder={t('uiTitle')} />
                 </Form.Group>
@@ -90,7 +90,7 @@ export default function NewCollection() {
                     onChange={handleChange}
                 />
                 <Form.Group className='my-3'>
-                    <Form.Control as='textarea' rows={3} name='description' placeholder={t('uiDescription')} />
+                    <Form.Control required as='textarea' rows={3} name='description' placeholder={t('uiDescription')} />
                 </Form.Group>
                 <CustomFields items={items} />
                 <Button variant='primary me-2' type='submit'>

@@ -12,31 +12,26 @@ import { Link } from 'react-router-dom'
 
 export default function SignUp() {
     const { t } = useTranslation()
-    const handleSubmit = async event => {
+    const handleSignUp = async event => {
         event.preventDefault()
+        event.stopPropagation()
         const { name, email, password } = event.target.elements
         try {
             await signUp(name.value, email.value, password.value)
             await signIn(email.value, password.value)
         } catch (error) {
-            alert(error.message)
+            alert(t(error.message))
         }
     }
     return (
-        <Container className='max-width-20 justify-content-center'>
+        <Container fluid>
             <Helmet>
                 <title>{t('pageSignUp')}</title>
             </Helmet>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className='mb-3'>
-                    <Form.Control type='text' name='name' placeholder={t('uiName')} />
-                </Form.Group>
-                <Form.Group className='mb-3'>
-                    <Form.Control type='email' name='email' placeholder={t('uiEmail')} />
-                </Form.Group>
-                <Form.Group className='mb-3'>
-                    <PasswordInput />
-                </Form.Group>
+            <Form className='user-form ms-auto me-auto' onSubmit={handleSignUp}>
+                <Form.Control className='mb-3' type='text' name='name' placeholder={t('uiName')} />
+                <Form.Control className='mb-3' type='email' name='email' placeholder={t('uiEmail')} />
+                <PasswordInput className='mb-3' />
                 <Nav.Link className='mb-3 p-0' as={Link} to={pathSignIn}>
                     {t('uiSignInPrompt')}
                 </Nav.Link>

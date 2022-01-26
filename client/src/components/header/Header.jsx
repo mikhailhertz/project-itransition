@@ -11,16 +11,16 @@ import SearchBar from './SearchBar'
 import ThemeButton from './ThemeButton'
 
 export default function Header() {
-    const { t } = useTranslation()
     const { theme } = useContext(ThemeContext)
+    const { t } = useTranslation()
     return (
-        <Navbar collapseOnSelect expand='md' className='px-3 mb-3' bg={theme} variant={theme}>
+        <Navbar className='p-2 mb-3' collapseOnSelect expand='md' bg={theme} variant={theme}>
             <Navbar.Brand as={Link} to={pathHome}>{t('siteTitle')}</Navbar.Brand>
             <SearchBar />
             <Navbar.Toggle />
             <Navbar.Collapse>
                 <Nav className='ms-auto'>
-                    <div className='d-flex justify-content-end ms-auto top-margin-on-break'>
+                    <div className='d-flex justify-content-end ms-auto'>
                         <ThemeButton />
                         <LanguageDropdown />
                         <ProfileButton />

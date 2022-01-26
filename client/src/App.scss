@@ -10,28 +10,32 @@ $primary: #6610f2;
 $half-spacer: $spacer * .5;
 
 @media (max-width: 767px) {
-    .top-margin-on-break {
+    .collapse {
         margin-top: $half-spacer;
     }
-    .bottom-margin-on-break {
-        margin-bottom: $half-spacer;
+    .collapsing {
+        margin-top: $half-spacer;
     }
-}
-
-.max-width-8 {
-    max-width: 8rem;
-}
-
-.max-width-20 {
-    max-width: 20rem;
-}
-
-.max-width-60 {
-    max-width: 60rem;
 }
 
 .item-image {
     max-width: 10rem;
+}
+
+.user-form {
+    max-width: 16rem;
+}
+
+.comment-section {
+    max-width: 40rem;
+}
+
+.new-collection-form {
+    max-width: 60rem;
+}
+
+.new-collection-form select {
+    max-width: 8rem;
 }
 
 .rbt-token-removeable {
@@ -83,6 +87,10 @@ $half-spacer: $spacer * .5;
     color: $light;
 }
 
+.dark .border {
+    border-color: $secondary !important;
+}
+
 .dark .form-control {
     background-color: $dark;
     color: $light;
@@ -117,6 +125,32 @@ $half-spacer: $spacer * .5;
     background-color: $dark;
     color: $light;
     border-color: $secondary;
+}
+
+.dark .accordion-item {
+    border-color: $secondary;
+}
+
+.dark .accordion-button {
+    background-color: $dark;
+    color: $light;
+}
+
+.dark .accordion-button:focus {
+    box-shadow: $input-btn-focus-box-shadow;
+}
+
+.dark .accordion-button::after {
+    filter: invert(100%);
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: hue-rotate(40deg);
+}
+
+.dark .accordion-body {
+    background: $dark;
+    color: $light;
 }
 
 .dark .card {

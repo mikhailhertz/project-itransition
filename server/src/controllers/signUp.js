@@ -18,7 +18,7 @@ async function signUp(request, response) {
         })
         await user.save()
         response.sendStatus(200)
-    } catch (error) { response.status(400).json({ message: 'errUserAlreadyExists' }) }
+    } catch (error) { response.status(400).send('errUserAlreadyExists') }
 }
 
 module.exports = signUp

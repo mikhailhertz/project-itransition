@@ -1,46 +1,53 @@
 import getUser from 'api/get/getUser'
-import { pathProfile } from 'paths'
-import { AuthenticationContext } from 'providers/AuthenticationProvider'
-import { useContext, useEffect, useState } from 'react'
+import fetchUsersCollections from 'api/get/getUsersCollections'
+import CollectionList from 'components/view/CollectionList'
+import { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { Navigate, useParams } from 'react-router-dom'
-import fetchUsersCollections from 'api/get/getUsersCollections'
+import { useParams } from 'react-router-dom'
 
 export default function OtherUsersProfile() {
-    const { t } = useTranslation()
+    const [state, setState] = useState({
+        loading: true,
+        user: null,
+        collections: []
+    })
     const { userId } = useParams()
-    const [userData, setUserData] = useState(null)
-    const { token } = useContext(AuthenticationContext)
+    const { t } = useTranslation()
     useEffect(() => {
-        getUser(userId).then(result => setUserData(result))
-        fetchUsersCollections(userId)
+        getUser(userId).then(async user => {
+            setState({
+                loading: false,
+                user: user,
+                collections: user ? await fetchUsersCollections(userId) : []
+            })
+        })
     }, [userId])
-    if (userData == null) {
+    if (state.loading) {
         return <></>
-    }
-    if (userId === token.uid) {
-        return <Navigate to={pathProfile} replace={true} />
-    }
-    if (userData.id === 404) {
+    } else if (state.user) {
         return (
             <Container fluid>
                 <Helmet>
-                    <title>{t('uiUserNotFound')}</title>
+                    <title>{state.user.name}</title>
                 </Helmet>
-                <div className='h1'>{t('uiUserNotFound')}</div>
+                <h4 className='mb-3'>
+                    {t('uiOtherUsersCollections', { username: state.user.name })}
+                </h4>
+                <CollectionList collections={state.collections} />
+            </Container>
+        )
+    } else {
+        return (
+            <Container fluid>
+                <Helmet>
+                    <title>{t('errUserNotFound')}</title>
+                </Helmet>
+                <h4 className='mb-3'>
+                    {t('errUserNotFound')}
+                </h4>
             </Container>
         )
     }
-    return (
-        <Container fluid>
-            <Helmet>
-                <title>{userData.name}</title>
-            </Helmet>
-            <div className='h4 mb-3'>
-                {t('uiOtherUsersCollections', { username: userData.name })}
-            </div>
-        </Container>
-    )
 }

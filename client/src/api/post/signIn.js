@@ -5,7 +5,9 @@ export default async function signIn(email, password) {
         await firebase.auth().signInWithEmailAndPassword(email, password)
     } catch (error) {
         if (error.code === 'auth/wrong-password') {
-            throw { message: 'errWrongLogin' }
+            throw new Error('errWrongLogin')
+        } else if (error.code === 'auth/user-not-found') {
+            throw new Error('errUserNotFound')
         } else {
             throw error
         }
