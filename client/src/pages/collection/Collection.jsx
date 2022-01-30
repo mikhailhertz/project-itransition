@@ -18,6 +18,7 @@ import remarkGfm from 'remark-gfm'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AuthenticationContext } from 'providers/AuthenticationProvider'
+import { Helmet } from 'react-helmet-async'
 
 export default function Collection() {
     const [state, setState] = useState({
@@ -36,8 +37,8 @@ export default function Collection() {
         await deleteCollection(collectionId)
         navigate(-1)
     }
-    const handleDeleteItem = async event => {
-        await deleteItem(event.target.value)
+    const handleDeleteItem = async id => {
+        await deleteItem(id)
         fetchCollection(collectionId).then(result => setState({
             loading: false,
             collection: result
@@ -58,12 +59,15 @@ export default function Collection() {
     } else {
         return (
             <Container fluid>
+                <Helmet>
+                    <title>{t('pageCollection')}</title>
+                </Helmet>
                 <div className='d-flex align-items-center mb-3'>
                     <h1 className='mb-0 me-3'>
                         {state.collection.title}
                     </h1>
                     {
-                        (state.collection.user === token.uid || admin) &&
+                        (token && (state.collection.user === token.uid || admin)) &&
                         <Button onClick={handleDeleteCollection} className='bg-transparent border-0'>
                             <FontAwesomeIcon icon={faTrash} color='red' />
                         </Button>
@@ -92,8 +96,8 @@ export default function Collection() {
                                     {item.title}
                                 </h5>
                                 {
-                                    (state.collection.user === token.uid || admin) &&
-                                    <Button onClick={handleDeleteItem} className='bg-transparent border-0' value={item._id}>
+                                    (token && (state.collection.user === token.uid || admin)) &&
+                                    <Button onClick={event => handleDeleteItem(item._id)} className='bg-transparent border-0' value={item._id}>
                                         <FontAwesomeIcon icon={faTrash} color='red' />
                                     </Button>
                                 }
