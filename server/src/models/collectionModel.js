@@ -15,6 +15,11 @@ const CollectionSchema = mongoose.Schema({
 //CollectionSchema.index({ title: 'text', tags: 'text', description: 'text' })
 CollectionSchema.index({ '$**': 'text' })
 
+//CollectionSchema.pre('deleteOne', { document: true, query: false }, next => {
+//    console.log(this)
+//    next()
+//})
+
 const Collection = mongoose.model('Collection', CollectionSchema, 'collections')
 
 module.exports = Collection

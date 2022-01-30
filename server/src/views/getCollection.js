@@ -2,7 +2,7 @@ const Collection = require('../models/collectionModel')
 
 async function getCollection(request, response) {
     var collection = await Collection.findOne({ _id: request.query.id })
-        .select('-_id -__v').populate('items', '-_id -__v -collectionRef').lean().exec()
+        .select('-_id -__v').populate('items', '-__v -collectionRef').lean().exec()
     response.json(collection)
 }
 

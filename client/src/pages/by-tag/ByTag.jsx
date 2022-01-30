@@ -13,7 +13,6 @@ export default function ByTag() {
     useEffect(() => {
         getCollectionsByTag(state).then(result => setCollections(result))
     }, [state])
-    console.log(collections)
     return (
         <Container fluid>
             <Helmet>

@@ -47,13 +47,12 @@ export default function CustomFields({ items }) {
             } else if (type === 'color') {
                 element =
                     <div className='d-flex align-items-center'>
-                        <Form.Label className='me-3' variant='secondary'>{title}</Form.Label>
                         <Form.Control key={title + id} type='color' name={title + id} />
                     </div>
             } else if (type === 'image') {
                 element = <Form.Control required type='file' id={title + id} accept='image/*' />
             } else {
-                element = <Form.Control required key={title + id} type={items.get(id).get(title)} placeholder={title} name={title + id} />
+                element = <Form.Control required key={title + id} type={items.get(id).get(title)} name={title + id} />
             }
             elements.push(
                 <div className='d-flex my-3 align-items-center' key={'flex' + title + id}>
@@ -97,28 +96,3 @@ export default function CustomFields({ items }) {
         </>
     )
 }
-
-/*
-<div className='d-flex my-3 align-items-center'>
-                <div className='text-muted'>
-                    {t('uiFields')}
-                </div>
-                <Button className='bg-transparent border-0 me-1' variant='success' onClick={event => console.log(event)}>
-                    <FontAwesomeIcon icon={faPlus} color='green' />
-                </Button>
-            </div>
-            <div className='d-flex my-3 align-items-center'>
-                <Form.Control className='me-3' type='text' id={'newFieldTitle'} placeholder={t('uiNewFieldTitle')} />
-                <Form.Select className='max-width-8' id={'newFieldType'}>
-                    <option value='text'>{t('uiText')}</option>
-                    <option value='number'>{t('uiNumber')}</option>
-                    <option value='image'>{t('uiImage')}</option>
-                    <option value='date'>{t('uiDate')}</option>
-                    <option value='color'>{t('uiColor')}</option>
-                    <option value='boolean'>{t('uiBoolean')}</option>
-                </Form.Select>
-            </div>
-            <div className='pt-3'>
-                {elements}
-            </div>
-*/

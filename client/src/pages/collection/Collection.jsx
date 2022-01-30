@@ -1,4 +1,6 @@
 import fetchCollection from 'api/get/getCollection'
+import deleteCollection from 'api/post/deleteCollection'
+import deleteItem from 'api/post/deleteItem'
 import CommentSection from 'components/view/CommentSection'
 import Likes from 'components/view/Likes'
 import { pathByTag } from 'paths'
@@ -13,18 +15,33 @@ import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import { useNavigate, useParams } from 'react-router-dom'
 import remarkGfm from 'remark-gfm'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { AuthenticationContext } from 'providers/AuthenticationProvider'
 
 export default function Collection() {
     const [state, setState] = useState({
         loading: true,
         collection: null
     })
+    const { token, admin } = useContext(AuthenticationContext)
     const { socket } = useContext(SocketContext)
     const { collectionId } = useParams()
     const navigate = useNavigate()
     const { t } = useTranslation()
     const handleTagClick = event => {
         navigate(pathByTag, { state: event.target.value })
+    }
+    const handleDeleteCollection = async event => {
+        await deleteCollection(collectionId)
+        navigate(-1)
+    }
+    const handleDeleteItem = async event => {
+        await deleteItem(event.target.value)
+        fetchCollection(collectionId).then(result => setState({
+            loading: false,
+            collection: result
+        }))
     }
     useEffect(() => {
         fetchCollection(collectionId).then(result => setState({
@@ -41,9 +58,17 @@ export default function Collection() {
     } else {
         return (
             <Container fluid>
-                <h1 className='mb-3'>
-                    {state.collection.title}
-                </h1>
+                <div className='d-flex align-items-center mb-3'>
+                    <h1 className='mb-0 me-3'>
+                        {state.collection.title}
+                    </h1>
+                    {
+                        (state.collection.user === token.uid || admin) &&
+                        <Button onClick={handleDeleteCollection} className='bg-transparent border-0'>
+                            <FontAwesomeIcon icon={faTrash} color='red' />
+                        </Button>
+                    }
+                </div>
                 <h3 className='pb-0'>
                     {t('uiDescription')}
                 </h3>
@@ -62,9 +87,17 @@ export default function Collection() {
                 {
                     state.collection.items.map((item, i) =>
                         <Fragment key={'CollectionFragment' + i}>
-                            <h5 key={'CollectionItemTitle' + i} className='mt-4 mb-0'>
-                                {item.title}
-                            </h5>
+                            <div className='d-flex align-items-center mt-4'>
+                                <h5 key={'CollectionItemTitle' + i} className='mb-0 me-3'>
+                                    {item.title}
+                                </h5>
+                                {
+                                    (state.collection.user === token.uid || admin) &&
+                                    <Button onClick={handleDeleteItem} className='bg-transparent border-0' value={item._id}>
+                                        <FontAwesomeIcon icon={faTrash} color='red' />
+                                    </Button>
+                                }
+                            </div>
                             <ListGroup>
                                 {
                                     item.properties.map((property, j) => {
@@ -95,7 +128,7 @@ export default function Collection() {
                 }
                 <Likes collectionId={collectionId} />
                 <CommentSection collectionId={collectionId} />
-            </Container>
+            </Container >
         )
     }
 }

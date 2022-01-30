@@ -9,6 +9,8 @@ const path = require('path')
 const fs = require('fs')
 
 const blockUser = require('./src/controllers/blockUser')
+const deleteCollection = require('./src/controllers/deleteCollection')
+const deleteItem = require('./src/controllers/deleteItem')
 const postCollection = require('./src/controllers/postCollection')
 const postComment = require('./src/controllers/postComment')
 const postTag = require('./src/controllers/postTag')
@@ -81,6 +83,8 @@ io.on('connection', (socket) => {
 })
 
 app.post('/api/block-user', adminGuard, blockUser)
+app.post('/api/delete-collection', tokenGuard, deleteCollection)
+app.post('/api/delete-item', tokenGuard, deleteItem)
 app.post('/api/post-collection', tokenGuard, upload.any('picture'), postCollection)
 app.post('/api/post-comment', tokenGuard, postComment, eventNewComment)
 app.post('/api/post-tag', tokenGuard, postTag)
