@@ -11,8 +11,9 @@ async function postCollection(request, response) {
     items = items.map(item => {
         item.properties.forEach(property => {
             if (property.type === 'image') {
-                var path = request.files.find(file => file.fieldname === property.title).path
-                property.value = path.replace('uploads', '').replace(/\\/g, "/")
+                var path = request.files.shift().path
+                console.log(path)
+                property.value = path.replace('uploads', '').replace(/\\/g, '/')
                 if (preview == null) {
                     preview = property.value
                 }
